@@ -1,33 +1,38 @@
+import math
 
-    'tan': math.tan,
-    'sqrt': math.sqrt,
-    'log': math.log,  # Natural logarithm
-    'log10': math.log10,
-    'factorial': math.factorial,
-    'exp': math.exp,  # Exponential function (e^x)
-    'pi': math.pi,
-    'e': math.e,
-    'radians': math.radians,  # For converting degrees to radians
-    'degrees': math.degrees,  # For converting radians to degrees
-}
-print("Welcome to the Scientific Calculator!")
-print("Enter mathematical expressions using functions like sin(), cos(), sqrt(), etc.")
-print("Use 'pi' for π and 'e' for e. Type 'quit' to exit.")
+print("=== Scientific Calculator ===")
+print("Available operations:")
+print("+, -, *, /, ^ (power)")
+print("Functions: sqrt(x), sin(x), cos(x), tan(x), asin(x), acos(x), atan(x), log(x), exp(x)")
+print("Constants: pi, e")
+print("Conversions: deg(x) → convert radians to degrees, rad(x) → convert degrees to radians")
+print("Type 'exit' to quit")
+
 while True:
+    expr = input("\nEnter expression: ").strip()
+    if expr.lower() == "exit":
+        print("Calculator closed.")
+        break
     try:
-        expression = input("\nEnter an expression: ").strip()
-        
-        if expression.lower() == 'quit':
-            print("Exiting the calculator. Goodbye!")
-            break
-        
-        if not expression:  # Skip empty input
-            continue
-        
-        # Evaluate the expression safely
-        result = eval(expression, {"__builtins__": None}, allowed_names)
+        # Replace ^ with ** for power operation
+        expr = expr.replace("^", "**")
+
+        # Safe evaluation with math functions
+        result = eval(expr, {"__builtins__": None}, {
+            "sqrt": math.sqrt,
+            "sin": math.sin,
+            "cos": math.cos,
+            "tan": math.tan,
+            "asin": math.asin,
+            "acos": math.acos,
+            "atan": math.atan,
+            "log": math.log,
+            "exp": math.exp,
+            "pi": math.pi,
+            "e": math.e,
+            "deg": math.degrees,   # radians → degrees
+            "rad": math.radians    # degrees → radians
+        })
         print("Result:", result)
-    
     except Exception as e:
-        print("Error: Invalid expression. Please check your input and try again.")
-        print("Details:", str(e))
+        print("Error:", e)
